@@ -1,14 +1,17 @@
 package com.syswow.vkwall;
 
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.Date;
+
 public class Post {
     private int ID, authorID, ownerID;
-    private long date;
-    private String text;
+    private long longDate;
+    private String text, date;
     JSONArray profiles;
     String author;
 
@@ -16,7 +19,7 @@ public class Post {
         this.ID = ID;
         this.authorID = authorID;
         this.ownerID = ownerID;
-        this.date = date;
+        this.longDate = date;
         this.text = text;
         this.profiles = profiles;
 
@@ -49,7 +52,12 @@ public class Post {
         return ownerID;
     }
 
-    public long getDate() {
+    public String getDate() {
+        date = DateFormat
+                .format("dd.MM.yy kk:mm",
+                        new Date(longDate * 1000)
+                ).toString();
+
         return date;
     }
 

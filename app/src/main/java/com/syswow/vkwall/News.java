@@ -95,7 +95,7 @@ public class News extends Activity {
 
                 postName.setText(post.getAuthor());
                 postText.setText(post.getText());
-                postData.setText(Long.toString(post.getDate()));
+                postData.setText(post.getDate());
 
                 item.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 linLayout.addView(item);
