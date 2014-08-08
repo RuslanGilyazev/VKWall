@@ -4,5 +4,7 @@
     <string name="app_name">VKWall</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="login_with_vk">Login with VK</string>
+    <string name="title_activity_news">News</string>
 
 </resources>
