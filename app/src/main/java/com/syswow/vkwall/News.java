@@ -4,8 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.syswow.vkwall.R;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
@@ -61,20 +67,38 @@ public class News extends Activity {
     public void getNewsData(JSONObject jsonObject) {
         JSONObject response;
         JSONArray items;
+        JSONArray profiles;
+
+        LinearLayout linLayout = (LinearLayout) findViewById(R.id.linLayout);
+        LayoutInflater ltInflater = getLayoutInflater();
 
         try {
             response = jsonObject.getJSONObject("response");
             items = response.getJSONArray("items");
+            profiles = response.getJSONArray("profiles");
 
             //Get all news
             for(int itemsCount = 0; itemsCount < items.length(); itemsCount++ ) {
                 Post post  = new Post(
+                        profiles,
                         items.getJSONObject(itemsCount).getInt("id"),
                         items.getJSONObject(itemsCount).getInt("from_id"),
                         items.getJSONObject(itemsCount).getInt("owner_id"),
                         items.getJSONObject(itemsCount).getLong("date"),
                         items.getJSONObject(itemsCount).getString("text"));
                 posts.add(post);
+
+                View item = ltInflater.inflate(R.layout.post, linLayout, false);
+                TextView postName = (TextView) item.findViewById(R.id.news_name);
+                TextView postText = (TextView) item.findViewById(R.id.news_post);
+                TextView postData = (TextView) item.findViewById(R.id.news_data);
+
+                postName.setText(post.getAuthor());
+                postText.setText(post.getText());
+                postData.setText(Long.toString(post.getDate()));
+
+                item.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                linLayout.addView(item);
             }
 
         } catch (JSONException e) {
