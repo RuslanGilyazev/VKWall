@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,11 +28,13 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        VKSdk.initialize(VkListener, APP_ID, VKAccessToken.tokenFromSharedPreferences(this, S_TOKEN_KEY));
+        VKSdk.initialize(VkListener, APP_ID,
+                VKAccessToken.tokenFromSharedPreferences(this, S_TOKEN_KEY));
     }
 
     public void loginVkButtonClick(View v) {
         VKSdk.authorize(sMyScope, true, false);
+        Log.d("VKWALL", "authorize");
     }
 
     @Override
