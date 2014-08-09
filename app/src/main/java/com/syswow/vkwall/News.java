@@ -42,7 +42,7 @@ public class News extends Activity {
 
     //Request to VK
     public void getNews() {
-        VKRequest newsRequest = new VKRequest("wall.get", VKParameters.from("count", 2,
+        VKRequest newsRequest = new VKRequest("wall.get", VKParameters.from("count", 20,
                 "filter", "all", "extended", 1));
         newsRequest.executeWithListener(new VKRequest.VKRequestListener() {
 

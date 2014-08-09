@@ -38,7 +38,7 @@ public class Post {
         try {
             for (int profilesCount = 0; profilesCount < profiles.length(); profilesCount++) {
                 if (authorID == profiles.getJSONObject(profilesCount).getInt("id"))
-                    author = profiles.getJSONObject(profilesCount).getString("first_name") +
+                    author = profiles.getJSONObject(profilesCount).getString("first_name") + " " +
                             profiles.getJSONObject(profilesCount).getString("last_name");
             }
         }   catch (JSONException e) {
