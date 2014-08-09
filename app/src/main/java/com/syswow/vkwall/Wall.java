@@ -1,18 +1,19 @@
 package com.syswow.vkwall;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.syswow.vkwall.R;
+import com.vk.sdk.VKUIHelper;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
@@ -22,26 +23,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
-public class News extends Activity {
+public class Wall extends Activity {
     ArrayList<Post> posts = new ArrayList<Post>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
-        getNews();
+        setContentView(R.layout.activity_wall);
+        getWall();
     }
 
     //Request to VK
-    public void getNews() {
+    public void getWall() {
         VKRequest newsRequest = new VKRequest("wall.get", VKParameters.from("count", 20,
                 "filter", "all", "extended", 1));
         newsRequest.executeWithListener(new VKRequest.VKRequestListener() {
@@ -49,7 +45,7 @@ public class News extends Activity {
             @Override
             public void onComplete(VKResponse response) {
                 super.onComplete(response);
-                getNewsData(response.json);
+                getWallData(response.json);
             }
 
             @Override
@@ -64,7 +60,7 @@ public class News extends Activity {
         });
     }
 
-    public void getNewsData(JSONObject jsonObject) {
+    public void getWallData(JSONObject jsonObject) {
         JSONObject response;
         JSONArray items;
         JSONArray profiles;
@@ -92,6 +88,11 @@ public class News extends Activity {
                 TextView postName = (TextView) item.findViewById(R.id.news_name);
                 TextView postText = (TextView) item.findViewById(R.id.news_post);
                 TextView postData = (TextView) item.findViewById(R.id.news_data);
+                ImageView postAvatar = (ImageView) item.findViewById(R.id.news_ava);
+
+                ImagesDownloader imagesDownloader = new ImagesDownloader();
+                imagesDownloader.setImageView(postAvatar);
+                imagesDownloader.execute(post.getAvatar50url());
 
                 postName.setText(post.getAuthor());
                 postText.setText(post.getText());
@@ -105,6 +106,24 @@ public class News extends Activity {
             Log.d("VKWALL", e.toString());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        VKUIHelper.onResume(this);
+    }
+
+    @Override
+    protected  void onDestroy() {
+        super.onDestroy();
+        VKUIHelper.onDestroy(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        VKUIHelper.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

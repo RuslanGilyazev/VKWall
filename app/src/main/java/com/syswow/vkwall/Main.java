@@ -77,13 +77,13 @@ public class Main extends Activity {
         @Override
         public void onReceiveNewToken(VKAccessToken newToken) {
             newToken.saveTokenToSharedPreferences(Main.this, S_TOKEN_KEY);
-            Intent i = new Intent(Main.this, News.class);
+            Intent i = new Intent(Main.this, Wall.class);
             startActivity(i);
         }
 
         @Override
         public void onAcceptUserToken(VKAccessToken token) {
-            Intent i = new Intent(Main.this, News.class);
+            Intent i = new Intent(Main.this, Wall.class);
             startActivity(i);
         }
     };

@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".News"
+            android:name=".Wall"
             android:label="@string/title_activity_news" >
         </activity>
     </application>
